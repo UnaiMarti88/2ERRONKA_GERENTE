@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="kontrola.ProduktuaFormController"
+      spacing="10">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Izena:"/>
+        <TextField fx:id="txtIzena" GridPane.columnIndex="1"/>
+
+        <Label text="Prezioa:" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtPrezioa" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Stock:" GridPane.rowIndex="2"/>
+        <TextField fx:id="txtStock" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Min Stock:" GridPane.rowIndex="3"/>
+        <TextField fx:id="txtStockMin" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Max Stock:" GridPane.rowIndex="4"/>
+        <TextField fx:id="txtStockMax" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Mota:" GridPane.rowIndex="5"/>
+        <ComboBox fx:id="cmbMota" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Gorde" onAction="#gordeProduktua"/>
+        <Button text="Utzi" onAction="#itxi"/>
+    </HBox>
+</VBox>

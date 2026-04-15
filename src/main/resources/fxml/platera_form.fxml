@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="kontrola.PlateraFormController"
+      spacing="10" prefWidth="500">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Izena:"/>
+        <TextField fx:id="txtIzena" GridPane.columnIndex="1"/>
+
+        <Label text="Mota:" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtMota" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Prezioa:" GridPane.rowIndex="2"/>
+        <TextField fx:id="txtPrezioa" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Kategoria:" GridPane.rowIndex="3"/>
+        <ComboBox fx:id="cmbKategoria" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Separator/>
+    <Label text="Produktuak (osagaiak):" style="-fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <TableView fx:id="produktuTaula" prefHeight="200" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colProduktuIzena" text="Produktua" prefWidth="250"/>
+            </columns>
+        </TableView>
+
+        <VBox spacing="5">
+            <Button text="➕ Gehitu" onAction="#gehituProduktua"/>
+            <Button text="❌ Kendu" onAction="#kenduProduktua"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Gorde" onAction="#gordePlatera"/>
+        <Button text="Utzi" onAction="#itxi"/>
+    </HBox>
+</VBox>

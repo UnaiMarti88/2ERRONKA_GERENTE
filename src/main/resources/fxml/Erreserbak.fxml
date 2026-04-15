@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="kontrola.ErreserbakController"
+            prefWidth="1280"
+            prefHeight="460">
+
+    <top>
+        <ToolBar>
+            <Label text="Bilatu:"/>
+            <TextField fx:id="txtBuscar" promptText="Bezeroa, telefonoa, mahaia edo langilea" prefWidth="280"/>
+
+            <Button fx:id="btnAdd" text="Gehitu" onAction="#gehituErreserba"/>
+            <Button fx:id="btnEdit" text="Editatu" onAction="#editatuErreserba"/>
+            <Button fx:id="btnDelete" text="Ezabatu" onAction="#ezabatuErreserba"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <TableView fx:id="erreserbakTable">
+            <columns>
+                <TableColumn fx:id="colData" text="Data eta ordua" prefWidth="150"/>
+                <TableColumn fx:id="colMota" text="Mota" prefWidth="100"/>
+                <TableColumn fx:id="colBezeroa" text="Bezeroa" prefWidth="170"/>
+                <TableColumn fx:id="colMahaia" text="Mahaia" prefWidth="180"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
