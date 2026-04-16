@@ -17,11 +17,6 @@
             <Button fx:id="btnAdd" text="Gehitu" onAction="#gehituPlatera"/>
             <Button fx:id="btnEdit" text="Editatu" onAction="#editatuPlatera"/>
             <Button fx:id="btnDelete" text="Ezabatu" onAction="#ezabatuPlatera"/>
-
-            <Separator orientation="VERTICAL"/>
-
-            <Label text="Filtratu mota:"/>
-            <ComboBox fx:id="cmbMotak" prefWidth="150"/>
         </ToolBar>
     </top>
 

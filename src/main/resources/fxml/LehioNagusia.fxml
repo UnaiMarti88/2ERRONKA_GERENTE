@@ -58,7 +58,7 @@
 
                     <Region VBox.vgrow="ALWAYS" />
 
-                    <Button text="Saioa itxi" styleClass="left-button" maxWidth="Infinity" style="-fx-background-color: rgba(255,255,255,0.05);">
+                    <Button fx:id="btnSaioaItxi" onAction="#saioaItxi" text="Saioa itxi" styleClass="left-button" maxWidth="Infinity" style="-fx-background-color: rgba(255,255,255,0.05);">
                         <graphic>
                             <Label text="🚪" style="-fx-font-size: 20;"/>
                         </graphic>

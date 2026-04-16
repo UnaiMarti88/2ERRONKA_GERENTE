@@ -23,7 +23,6 @@ public class PlaterakController {
     @FXML private TableColumn<Platera, Double> colPrezioa;
 
     @FXML private TextField txtBilatu;
-    @FXML private ComboBox<String> cmbMotak;
 
     @FXML private Button btnAdd, btnEdit, btnDelete;
 
@@ -40,10 +39,7 @@ public class PlaterakController {
         filtratua = new FilteredList<>(platerak, p -> true);
         plateraTable.setItems(filtratua);
 
-        cmbMotak.getItems().setAll(PlaterakDB.lortuPlateraMotak());
-
         txtBilatu.textProperty().addListener((obs, old, val) -> aplikatuFiltro());
-        cmbMotak.valueProperty().addListener((obs, old, val) -> aplikatuFiltro());
 
         plateraTable.setRowFactory(tv -> {
             TableRow<Platera> row = new TableRow<>();
@@ -66,8 +62,7 @@ public class PlaterakController {
         String testua = txtBilatu.getText().toLowerCase();
 
         filtratua.setPredicate(p -> {
-            boolean testuaOndo = testua.isEmpty() || p.getIzena().toLowerCase().contains(testua);
-            return testuaOndo;
+            return testua.isEmpty() || p.getIzena().toLowerCase().contains(testua);
         });
     }
 

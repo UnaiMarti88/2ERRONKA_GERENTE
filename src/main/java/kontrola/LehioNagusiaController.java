@@ -41,6 +41,30 @@ public class LehioNagusiaController {
         cargarVista("/fxml/Erreserbak.fxml", "Erreserbak");
     }
 
+    @FXML
+    public void saioaItxi() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login-view.fxml"));
+            Parent root = loader.load();
+            
+            javafx.scene.Scene scene = new javafx.scene.Scene(root, 920, 540);
+            scene.getStylesheets().add(getClass().getResource("/css/estilo.css").toExternalForm());
+            
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("NovaFrame - Login");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+            
+            // Cerrar la ventana actual
+            javafx.stage.Stage currentStage = (javafx.stage.Stage) contentArea.getScene().getWindow();
+            currentStage.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void cargarVista(String rutaFXML, String nombreVista) {
         System.out.println("Pantalla de " + nombreVista + "...");
 

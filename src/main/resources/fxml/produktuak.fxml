@@ -31,8 +31,6 @@
                 <TableColumn fx:id="colIzena" text="Izena" prefWidth="250"/>
                 <TableColumn fx:id="colPrezioa" text="Prezioa" prefWidth="100"/>
                 <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
-                <TableColumn fx:id="colStockMin" text="Min" prefWidth="80"/>
-                <TableColumn fx:id="colStockMax" text="Max" prefWidth="80"/>
             </columns>
         </TableView>
     </center>

@@ -5,16 +5,14 @@ public class Platera {
     private String izena;
     private String mota;
     private double prezioa;
-    private int plateraMotakId;
 
     public Platera() {}
 
-    public Platera(int id, String izena, String mota, double prezioa, int plateraMotakId) {
+    public Platera(int id, String izena, String mota, double prezioa) {
         this.id = id;
         this.izena = izena;
         this.mota = mota;
         this.prezioa = prezioa;
-        this.plateraMotakId = plateraMotakId;
     }
 
     public int getId() { return id; }
@@ -28,7 +26,4 @@ public class Platera {
 
     public double getPrezioa() { return prezioa; }
     public void setPrezioa(double prezioa) { this.prezioa = prezioa; }
-
-    public int getPlateraMotakId() { return plateraMotakId; }
-    public void setPlateraMotakId(int plateraMotakId) { this.plateraMotakId = plateraMotakId; }
 }

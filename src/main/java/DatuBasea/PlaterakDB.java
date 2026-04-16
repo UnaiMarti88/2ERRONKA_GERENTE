@@ -11,7 +11,7 @@ public class PlaterakDB {
 
     public static List<Platera> lortuGuztiak() {
         List<Platera> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, mota, perezioa, platera_motak_id FROM platerak";
+        String sql = "SELECT id, izena, mota, perezioa FROM platerak";
 
         try (Connection conn = Conn.getConnection();
              Statement st = conn.createStatement();
@@ -23,7 +23,6 @@ public class PlaterakDB {
                 p.setIzena(rs.getString("izena"));
                 p.setMota(rs.getString("mota"));
                 p.setPrezioa(rs.getDouble("perezioa"));
-                p.setPlateraMotakId(rs.getInt("platera_motak_id"));
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -33,7 +32,7 @@ public class PlaterakDB {
     }
 
     public static int gehitu(Platera p) {
-        String sql = "INSERT INTO platerak (izena, mota, perezioa, platera_motak_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO platerak (izena, mota, perezioa) VALUES (?, ?, ?)";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -41,7 +40,6 @@ public class PlaterakDB {
             ps.setString(1, p.getIzena());
             ps.setString(2, p.getMota());
             ps.setDouble(3, p.getPrezioa());
-            ps.setInt(4, p.getPlateraMotakId());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
@@ -60,7 +58,7 @@ public class PlaterakDB {
     }
 
     public static void eguneratu(Platera p) {
-        String sql = "UPDATE platerak SET izena=?, mota=?, perezioa=?, platera_motak_id=? WHERE id=?";
+        String sql = "UPDATE platerak SET izena=?, mota=?, perezioa=? WHERE id=?";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -68,8 +66,7 @@ public class PlaterakDB {
             ps.setString(1, p.getIzena());
             ps.setString(2, p.getMota());
             ps.setDouble(3, p.getPrezioa());
-            ps.setInt(4, p.getPlateraMotakId());
-            ps.setInt(5, p.getId());
+            ps.setInt(4, p.getId());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -91,27 +88,10 @@ public class PlaterakDB {
         }
     }
 
-    public static List<String> lortuPlateraMotak() {
-        List<String> motak = new ArrayList<>();
-        String sql = "SELECT izena FROM platera_motak ORDER BY izena";
-
-        try (Connection conn = Conn.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-
-            while (rs.next()) {
-                motak.add(rs.getString("izena"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return motak;
-    }
-
     public static List<model.Produktuak> lortuPlaterakoProduktuak(int plateraId) {
         List<model.Produktuak> lista = new ArrayList<>();
         String sql = """
-            SELECT p.id, p.izena, p.prezioa, p.stock, p.stock_min, p.stock_max, p.irudia, p.produktuen_motak_id
+            SELECT p.id, p.izena, p.prezioa, p.stock, p.irudia, p.produktuen_motak_id
             FROM produktuak p
             JOIN produktuak_has_platerak php ON p.id = php.produktuak_id
             WHERE php.platerak_id = ?
@@ -127,8 +107,6 @@ public class PlaterakDB {
                 p.setIzena(rs.getString("izena"));
                 p.setPrezioa(rs.getDouble("prezioa"));
                 p.setStock(rs.getInt("stock"));
-                p.setStockMin(rs.getInt("stock_min"));
-                p.setStockMax(rs.getInt("stock_max"));
                 p.setIrudia(rs.getString("irudia"));
                 p.setProduktuenMotakId(rs.getInt("produktuen_motak_id"));
                 lista.add(p);

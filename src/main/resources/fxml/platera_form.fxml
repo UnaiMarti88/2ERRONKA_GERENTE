@@ -21,9 +21,6 @@
 
         <Label text="Prezioa:" GridPane.rowIndex="2"/>
         <TextField fx:id="txtPrezioa" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-        <Label text="Kategoria:" GridPane.rowIndex="3"/>
-        <ComboBox fx:id="cmbKategoria" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
     </GridPane>
 
     <Separator/>

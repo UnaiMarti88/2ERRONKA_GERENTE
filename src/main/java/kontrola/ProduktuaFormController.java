@@ -9,7 +9,7 @@ import model.Produktuak;
 
 public class ProduktuaFormController {
 
-    @FXML private TextField txtIzena, txtPrezioa, txtStock, txtStockMin, txtStockMax;
+    @FXML private TextField txtIzena, txtPrezioa, txtStock;
     @FXML private ComboBox<String> cmbMota;
 
     private Produktuak editatzen;
@@ -20,11 +20,17 @@ public class ProduktuaFormController {
             txtIzena.setText(p.getIzena());
             txtPrezioa.setText(String.valueOf(p.getPrezioa()));
             txtStock.setText(String.valueOf(p.getStock()));
-            txtStockMin.setText(p.getStockMin() != null ? String.valueOf(p.getStockMin()) : "");
-            txtStockMax.setText(p.getStockMax() != null ? String.valueOf(p.getStockMax()) : "");
             
-            
-            
+            // Try to select the correct type
+            String sql = "SELECT izena FROM produktuen_motak WHERE id = ?";
+            try (java.sql.Connection conn = Util.Conn.getConnection();
+                 java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, p.getProduktuenMotakId());
+                java.sql.ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    cmbMota.setValue(rs.getString("izena"));
+                }
+            } catch (Exception e) { e.printStackTrace(); }
         }
     }
 
@@ -39,9 +45,10 @@ public class ProduktuaFormController {
         String izena = txtIzena.getText().trim();
         String prezioStr = txtPrezioa.getText().trim();
         String stockStr = txtStock.getText().trim();
+        String mota = cmbMota.getValue();
 
-        if (izena.isEmpty() || prezioStr.isEmpty() || stockStr.isEmpty()) {
-            alerta("Bete beharrezko eremuak.");
+        if (izena.isEmpty() || prezioStr.isEmpty() || stockStr.isEmpty() || mota == null) {
+            alerta("Bete beharrezko eremu guztiak, mota barne.");
             return;
         }
 
@@ -50,9 +57,7 @@ public class ProduktuaFormController {
             editatzen.setIzena(izena);
             editatzen.setPrezioa(Double.parseDouble(prezioStr));
             editatzen.setStock(Integer.parseInt(stockStr));
-            editatzen.setStockMin(txtStockMin.getText().isEmpty() ? null : Integer.parseInt(txtStockMin.getText()));
-            editatzen.setStockMax(txtStockMax.getText().isEmpty() ? null : Integer.parseInt(txtStockMax.getText()));
-            editatzen.setProduktuenMotakId(1); // Default category
+            editatzen.setProduktuenMotakId(ProduktuakDB.lortuMotaId(mota));
 
             if (editatzen.getId() == 0) {
                 ProduktuakDB.gehituProduktua(editatzen);

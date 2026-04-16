@@ -15,7 +15,6 @@ import java.util.List;
 public class PlateraFormController {
 
     @FXML private TextField txtIzena, txtMota, txtPrezioa;
-    @FXML private ComboBox<String> cmbKategoria;
     @FXML private TableView<Produktuak> produktuTaula;
     @FXML private TableColumn<Produktuak, String> colProduktuIzena;
 
@@ -29,17 +28,11 @@ public class PlateraFormController {
             txtMota.setText(p.getMota());
             txtPrezioa.setText(String.valueOf(p.getPrezioa()));
             platerakoProduktuak.setAll(PlaterakDB.lortuPlaterakoProduktuak(p.getId()));
-            
-            
-            
         }
     }
 
     @FXML
     public void initialize() {
-        cmbKategoria.setItems(FXCollections.observableArrayList(PlaterakDB.lortuPlateraMotak()));
-        cmbKategoria.setEditable(true);
-
         colProduktuIzena.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getIzena()));
         produktuTaula.setItems(platerakoProduktuak);
     }
@@ -47,11 +40,17 @@ public class PlateraFormController {
     @FXML
     private void gehituProduktua() {
         List<Produktuak> guztiak = ProduktuakDB.lortuProduktuak();
+        
+        // Custom Dialog for multiple selection or at least better UX
         ChoiceDialog<Produktuak> dialog = new ChoiceDialog<>(null, guztiak);
-        dialog.setTitle("Gehitu produktua");
+        dialog.setTitle("Gehitu osagaia");
         dialog.setHeaderText("Aukeratu platerari gehitzeko produktua");
+        
+        // Use a cell factory to show names in the ChoiceDialog
+        dialog.getDialogPane().lookup(".combo-box"); 
+        
         dialog.showAndWait().ifPresent(p -> {
-            if (!platerakoProduktuak.contains(p)) {
+            if (p != null && !platerakoProduktuak.stream().anyMatch(existing -> existing.getId() == p.getId())) {
                 platerakoProduktuak.add(p);
             }
         });
@@ -79,7 +78,6 @@ public class PlateraFormController {
             editatzen.setIzena(izena);
             editatzen.setMota(mota);
             editatzen.setPrezioa(Double.parseDouble(prezioStr));
-            editatzen.setPlateraMotakId(1); // Default category
 
             int id;
             if (editatzen.getId() == 0) {

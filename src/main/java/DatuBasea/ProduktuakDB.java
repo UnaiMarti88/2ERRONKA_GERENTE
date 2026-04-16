@@ -11,7 +11,7 @@ public class ProduktuakDB {
 
     public static List<Produktuak> lortuProduktuak() {
         List<Produktuak> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, prezioa, stock, stock_min, stock_max, irudia, produktuen_motak_id FROM produktuak";
+        String sql = "SELECT id, izena, prezioa, stock, irudia, produktuen_motak_id FROM produktuak";
 
         try (Connection conn = Conn.getConnection();
              Statement st = conn.createStatement();
@@ -23,8 +23,6 @@ public class ProduktuakDB {
                 p.setIzena(rs.getString("izena"));
                 p.setPrezioa(rs.getDouble("prezioa"));
                 p.setStock(rs.getInt("stock"));
-                p.setStockMin(rs.getInt("stock_min"));
-                p.setStockMax(rs.getInt("stock_max"));
                 p.setIrudia(rs.getString("irudia"));
                 p.setProduktuenMotakId(rs.getInt("produktuen_motak_id"));
                 lista.add(p);
@@ -36,7 +34,7 @@ public class ProduktuakDB {
     }
 
     public static int gehituProduktua(Produktuak p) {
-        String sql = "INSERT INTO produktuak (izena, prezioa, stock, stock_min, stock_max, irudia, produktuen_motak_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO produktuak (izena, prezioa, stock, irudia, produktuen_motak_id) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -44,10 +42,8 @@ public class ProduktuakDB {
             ps.setString(1, p.getIzena());
             ps.setDouble(2, p.getPrezioa());
             ps.setInt(3, p.getStock());
-            if (p.getStockMin() != null) ps.setInt(4, p.getStockMin()); else ps.setNull(4, Types.INTEGER);
-            if (p.getStockMax() != null) ps.setInt(5, p.getStockMax()); else ps.setNull(5, Types.INTEGER);
-            ps.setString(6, p.getIrudia());
-            ps.setInt(7, p.getProduktuenMotakId());
+            ps.setString(4, p.getIrudia());
+            ps.setInt(5, p.getProduktuenMotakId());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
@@ -66,7 +62,7 @@ public class ProduktuakDB {
     }
 
     public static void eguneratuProduktua(Produktuak p) {
-        String sql = "UPDATE produktuak SET izena=?, prezioa=?, stock=?, stock_min=?, stock_max=?, irudia=?, produktuen_motak_id=? WHERE id=?";
+        String sql = "UPDATE produktuak SET izena=?, prezioa=?, stock=?, irudia=?, produktuen_motak_id=? WHERE id=?";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -74,11 +70,9 @@ public class ProduktuakDB {
             ps.setString(1, p.getIzena());
             ps.setDouble(2, p.getPrezioa());
             ps.setInt(3, p.getStock());
-            if (p.getStockMin() != null) ps.setInt(4, p.getStockMin()); else ps.setNull(4, Types.INTEGER);
-            if (p.getStockMax() != null) ps.setInt(5, p.getStockMax()); else ps.setNull(5, Types.INTEGER);
-            ps.setString(6, p.getIrudia());
-            ps.setInt(7, p.getProduktuenMotakId());
-            ps.setInt(8, p.getId());
+            ps.setString(4, p.getIrudia());
+            ps.setInt(5, p.getProduktuenMotakId());
+            ps.setInt(6, p.getId());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -116,5 +110,18 @@ public class ProduktuakDB {
         }
 
         return motak;
+    }
+
+    public static int lortuMotaId(String izena) {
+        String sql = "SELECT id FROM produktuen_motak WHERE izena = ?";
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, izena);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 6; // Default to 'Bebida' or similar if not found, based on previous SQL read
     }
 }

@@ -21,8 +21,6 @@ public class ProduktuakController {
     @FXML private TableColumn<Produktuak, String> colIzena;
     @FXML private TableColumn<Produktuak, Double> colPrezioa;
     @FXML private TableColumn<Produktuak, Integer> colStock;
-    @FXML private TableColumn<Produktuak, Integer> colStockMin;
-    @FXML private TableColumn<Produktuak, Integer> colStockMax;
 
     @FXML private TextField txtBilatu;
     @FXML private ComboBox<String> cmbMotak;
@@ -37,8 +35,6 @@ public class ProduktuakController {
         colIzena.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIzena()));
         colPrezioa.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getPrezioa()));
         colStock.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getStock()));
-        colStockMin.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getStockMin()));
-        colStockMax.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getStockMax()));
 
         produktuak = FXCollections.observableArrayList(ProduktuakDB.lortuProduktuak());
         filtratua = new FilteredList<>(produktuak, p -> true);
