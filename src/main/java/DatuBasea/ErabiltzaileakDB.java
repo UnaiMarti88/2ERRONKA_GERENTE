@@ -35,7 +35,7 @@ public class ErabiltzaileakDB {
 
     public List<Erabiltzailea> getAll() {
         List<Erabiltzailea> lista = new ArrayList<>();
-        String sql = "SELECT * FROM langileak ORDER BY id";
+        String sql = "SELECT id, izena, abizena, erabiltzailea, pasahitza, email, telefonoa, baimena, mahaiak_id, txat_baimena FROM langileak ORDER BY id";
 
         try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -124,19 +124,29 @@ public class ErabiltzaileakDB {
     }
 
     private Erabiltzailea mapResultSet(ResultSet rs) throws SQLException {
-        Erabiltzailea e = new Erabiltzailea();
-        e.setId(rs.getInt("id"));
-        e.setIzena(rs.getString("izena"));
-        e.setAbizena(rs.getString("abizena"));
-        e.setErabiltzailea(rs.getString("erabiltzailea"));
-        e.setPasahitza(rs.getString("pasahitza"));
-        e.setEmail(rs.getString("email"));
-        e.setTelefonoa(rs.getString("telefonoa"));
-        e.setBaimena(rs.getInt("baimena"));
-        int mId = rs.getInt("mahaiak_id");
-        if (!rs.wasNull()) {
-            e.setMahaiakId(mId);
+        return new Erabiltzailea(
+            rs.getInt("id"),
+            rs.getString("izena"),
+            rs.getString("abizena"),
+            rs.getString("erabiltzailea"),
+            rs.getString("pasahitza"),
+            rs.getString("email"),
+            rs.getString("telefonoa"),
+            rs.getInt("baimena"),
+            rs.getObject("mahaiak_id") != null ? rs.getInt("mahaiak_id") : null,
+            rs.getInt("txat_baimena")
+        );
+    }
+
+    public boolean updateChatBaimena(int langileaId, int baimena) {
+        String sql = "UPDATE langileak SET txat_baimena = ? WHERE id = ?";
+        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, baimena);
+            ps.setInt(2, langileaId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return e;
     }
 }

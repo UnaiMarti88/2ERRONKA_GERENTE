@@ -87,8 +87,25 @@ public class PlaterakController {
     private void ezabatuPlatera() {
         Platera p = plateraTable.getSelectionModel().getSelectedItem();
         if (p != null) {
-            PlaterakDB.ezabatu(p.getId());
-            berritu();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Platera ezabatu");
+            confirm.setHeaderText("Ziur zaude '" + p.getIzena() + "' ezabatu nahi duzula?");
+            confirm.setContentText("Ekintza hau ezin da desegin.");
+
+            if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                // Primero intentamos borrar los ingredientes de la tabla intermedia
+                PlaterakDB.ezabatuPlaterakoProduktuak(p.getId());
+                
+                if (PlaterakDB.ezabatu(p.getId())) {
+                    berritu();
+                } else {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Errorea");
+                    error.setHeaderText("Ezin izan da platera ezabatu");
+                    error.setContentText("Baliteke platera eskaera baten parte izatea.");
+                    error.showAndWait();
+                }
+            }
         }
     }
 

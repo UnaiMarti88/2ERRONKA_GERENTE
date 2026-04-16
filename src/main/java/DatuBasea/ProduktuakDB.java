@@ -11,7 +11,8 @@ public class ProduktuakDB {
 
     public static List<Produktuak> lortuProduktuak() {
         List<Produktuak> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, prezioa, stock, irudia, produktuen_motak_id FROM produktuak";
+        String sql = "SELECT p.id, p.izena, p.prezioa, p.stock, p.irudia, p.produktuen_motak_id, m.izena AS mota_izena " +
+                     "FROM produktuak p JOIN produktuen_motak m ON p.produktuen_motak_id = m.id";
 
         try (Connection conn = Conn.getConnection();
              Statement st = conn.createStatement();
@@ -25,6 +26,7 @@ public class ProduktuakDB {
                 p.setStock(rs.getInt("stock"));
                 p.setIrudia(rs.getString("irudia"));
                 p.setProduktuenMotakId(rs.getInt("produktuen_motak_id"));
+                p.setMotaIzena(rs.getString("mota_izena"));
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -80,17 +82,18 @@ public class ProduktuakDB {
         }
     }
 
-    public static void ezabatuProduktua(int id) {
+    public static boolean ezabatuProduktua(int id) {
         String sql = "DELETE FROM produktuak WHERE id=?";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

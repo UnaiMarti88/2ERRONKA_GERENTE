@@ -7,16 +7,18 @@ public class Produktuak {
     private int stock;
     private String irudia;
     private int produktuenMotakId;
+    private String motaIzena;
 
     public Produktuak() {}
 
-    public Produktuak(int id, String izena, double prezioa, int stock, String irudia, int produktuenMotakId) {
+    public Produktuak(int id, String izena, double prezioa, int stock, String irudia, int produktuenMotakId, String motaIzena) {
         this.id = id;
         this.izena = izena;
         this.prezioa = prezioa;
         this.stock = stock;
         this.irudia = irudia;
         this.produktuenMotakId = produktuenMotakId;
+        this.motaIzena = motaIzena;
     }
 
     public int getId() { return id; }
@@ -36,6 +38,9 @@ public class Produktuak {
 
     public int getProduktuenMotakId() { return produktuenMotakId; }
     public void setProduktuenMotakId(int produktuenMotakId) { this.produktuenMotakId = produktuenMotakId; }
+
+    public String getMotaIzena() { return motaIzena; }
+    public void setMotaIzena(String motaIzena) { this.motaIzena = motaIzena; }
 
     @Override
     public String toString() {

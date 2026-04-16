@@ -74,17 +74,18 @@ public class PlaterakDB {
         }
     }
 
-    public static void ezabatu(int id) {
+    public static boolean ezabatu(int id) {
         String sql = "DELETE FROM platerak WHERE id=?";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

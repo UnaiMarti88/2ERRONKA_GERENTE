@@ -150,6 +150,7 @@ CREATE TABLE `langileak` (
   `telefonoa` varchar(9) DEFAULT NULL,
   `baimena` tinyint DEFAULT NULL,
   `mahaiak_id` int DEFAULT NULL,
+  `txat_baimena` tinyint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_langileak_mahaiak_idx` (`mahaiak_id`),
   CONSTRAINT `fk_langileak_mahaiak` FOREIGN KEY (`mahaiak_id`) REFERENCES `langileak` (`id`)

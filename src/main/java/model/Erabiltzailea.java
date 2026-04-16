@@ -12,13 +12,14 @@ public class Erabiltzailea {
     private String telefonoa;
     private int baimena;
     private Integer mahaiakId;
+    private int txatBaimena;
 
     public Erabiltzailea() {}
 
     public Erabiltzailea(int id, String izena, String abizena,
                          String erabiltzailea, String pasahitza,
                          String email, String telefonoa,
-                         int baimena, Integer mahaiakId) {
+                         int baimena, Integer mahaiakId, int txatBaimena) {
         this.id = id;
         this.izena = izena;
         this.abizena = abizena;
@@ -28,6 +29,7 @@ public class Erabiltzailea {
         this.telefonoa = telefonoa;
         this.baimena = baimena;
         this.mahaiakId = mahaiakId;
+        this.txatBaimena = txatBaimena;
     }
 
     public Erabiltzailea(String erabiltzailea, String pasahitza) {
@@ -62,6 +64,9 @@ public class Erabiltzailea {
 
     public Integer getMahaiakId() { return mahaiakId; }
     public void setMahaiakId(Integer mahaiakId) { this.mahaiakId = mahaiakId; }
+
+    public int getTxatBaimena() { return txatBaimena; }
+    public void setTxatBaimena(int txatBaimena) { this.txatBaimena = txatBaimena; }
 
     
     public String getRola() {

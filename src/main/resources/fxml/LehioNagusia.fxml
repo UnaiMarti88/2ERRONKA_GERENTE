@@ -38,15 +38,15 @@
                         </graphic>
                     </Button>
 
-                    <Button fx:id="btnMahaiak" onAction="#kargatuMahaiak" text="Mahaiak" styleClass="left-button" maxWidth="Infinity">
+                    <Button fx:id="btnLangileak" onAction="#kargatuLangileak" text="Langileak" styleClass="left-button" maxWidth="Infinity">
                         <graphic>
-                            <Label text="🪑" style="-fx-font-size: 20;"/>
+                            <Label text="👥" style="-fx-font-size: 20;"/>
                         </graphic>
                     </Button>
 
-                    <Button fx:id="btnHornitzaileak" onAction="#kargatuHornitzaileak" text="Hornitzaileak" styleClass="left-button" maxWidth="Infinity">
+                    <Button fx:id="btnMahaiak" onAction="#kargatuMahaiak" text="Mahaiak" styleClass="left-button" maxWidth="Infinity">
                         <graphic>
-                            <Label text="🚚" style="-fx-font-size: 20;"/>
+                            <Label text="🪑" style="-fx-font-size: 20;"/>
                         </graphic>
                     </Button>
 

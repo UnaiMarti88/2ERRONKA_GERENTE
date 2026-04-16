@@ -14,6 +14,8 @@ public class LehioNagusiaController {
     @FXML
     public void initialize() {
         System.out.println("LehioNagusiaController inicializado correctamente.");
+        // Cargar Platerak por defecto al iniciar
+        kargatuPlaterak();
     }
 
     @FXML
@@ -27,13 +29,13 @@ public class LehioNagusiaController {
     }
 
     @FXML
-    public void kargatuMahaiak() {
-        cargarVista("/fxml/mahaiak.fxml", "Mahaiak");
+    public void kargatuLangileak() {
+        cargarVista("/fxml/RolakForm.fxml", "Langileak");
     }
 
     @FXML
-    public void kargatuHornitzaileak() {
-        cargarVista("/fxml/Hornitzaileak.fxml", "Hornitzaileak");
+    public void kargatuMahaiak() {
+        cargarVista("/fxml/mahaiak.fxml", "Mahaiak");
     }
 
     @FXML

@@ -40,7 +40,10 @@ public class ProduktuakController {
         filtratua = new FilteredList<>(produktuak, p -> true);
         produktuTable.setItems(filtratua);
 
-        cmbMotak.getItems().setAll(ProduktuakDB.lortuMotak());
+        ObservableList<String> motak = FXCollections.observableArrayList("Guztiak");
+        motak.addAll(ProduktuakDB.lortuMotak());
+        cmbMotak.setItems(motak);
+        cmbMotak.getSelectionModel().selectFirst();
 
         txtBilatu.textProperty().addListener((obs, old, val) -> aplikatuFiltro());
         cmbMotak.valueProperty().addListener((obs, old, val) -> aplikatuFiltro());
@@ -64,10 +67,12 @@ public class ProduktuakController {
 
     private void aplikatuFiltro() {
         String testua = txtBilatu.getText().toLowerCase();
+        String mota = cmbMotak.getValue();
 
         filtratua.setPredicate(p -> {
             boolean testuaOndo = testua.isEmpty() || p.getIzena().toLowerCase().contains(testua);
-            return testuaOndo;
+            boolean motaOndo = mota == null || mota.equals("Guztiak") || (p.getMotaIzena() != null && p.getMotaIzena().equals(mota));
+            return testuaOndo && motaOndo;
         });
     }
 
@@ -92,8 +97,22 @@ public class ProduktuakController {
     private void ezabatuProduktua() {
         Produktuak p = produktuTable.getSelectionModel().getSelectedItem();
         if (p != null) {
-            ProduktuakDB.ezabatuProduktua(p.getId());
-            berritu();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Produktua ezabatu");
+            confirm.setHeaderText("Ziur zaude '" + p.getIzena() + "' ezabatu nahi duzula?");
+            confirm.setContentText("Ekintza hau ezin da desegin.");
+
+            if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                if (ProduktuakDB.ezabatuProduktua(p.getId())) {
+                    berritu();
+                } else {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Errorea");
+                    error.setHeaderText("Ezin izan da produktua ezabatu");
+                    error.setContentText("Baliteke produktua plater baten edo eskaera baten parte izatea.");
+                    error.showAndWait();
+                }
+            }
         }
     }
 

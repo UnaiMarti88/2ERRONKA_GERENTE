@@ -1,65 +1,90 @@
 package kontrola;
 
+import DatuBasea.ErabiltzaileakDB;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import model.Rolak;
-
-import java.io.IOException;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.Erabiltzailea;
 
 public class RolakFormController {
 
-    @FXML
-    private TextField txtIzena;
-    @FXML
-    private Button btnGorde, btnUtzi;
+    @FXML private TableView<Erabiltzailea> langileakTable;
+    @FXML private TableColumn<Erabiltzailea, String> colIzena;
+    @FXML private TableColumn<Erabiltzailea, String> colAbizena;
+    @FXML private TableColumn<Erabiltzailea, String> colErabiltzailea;
+    @FXML private TableColumn<Erabiltzailea, String> colEmail;
+    @FXML private TableColumn<Erabiltzailea, String> colRola;
+    @FXML private TableColumn<Erabiltzailea, Void> colChat;
 
-    private Rolak rol;
+    @FXML private TextField txtBilatu;
 
-    public static Rolak openForm(Rolak r) {
-        try {
-            FXMLLoader loader = new FXMLLoader(RolakFormController.class.getResource("/fxml/RolakForm.fxml"));
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(loader.load()));
-            stage.setResizable(false);
-            RolakFormController controller = loader.getController();
-            controller.setRol(r);
-            stage.showAndWait();
-            return controller.getRol();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void setRol(Rolak r) {
-        this.rol = r;
-        if (r != null) txtIzena.setText(r.getIzena());
-    }
-
-    public Rolak getRol() {
-        return rol;
-    }
+    private ObservableList<Erabiltzailea> langileak;
+    private FilteredList<Erabiltzailea> filtratua;
+    private final ErabiltzaileakDB db = new ErabiltzaileakDB();
 
     @FXML
-    private void gorde() {
-        String izena = txtIzena.getText();
-        if (izena != null && !izena.isBlank()) {
-            if (rol == null) rol = new Rolak();
-            rol.setIzena(izena);
-            ((Stage) btnGorde.getScene().getWindow()).close();
-        }
+    public void initialize() {
+        colIzena.setCellValueFactory(new PropertyValueFactory<>("izena"));
+        colAbizena.setCellValueFactory(new PropertyValueFactory<>("abizena"));
+        colErabiltzailea.setCellValueFactory(new PropertyValueFactory<>("erabiltzailea"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colRola.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRola()));
+
+        // Botón toggle para el chat
+        colChat.setCellFactory(param -> new TableCell<>() {
+            private final Button btn = new Button();
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Erabiltzailea e = getTableView().getItems().get(getIndex());
+                    actualizarBoton(e);
+                    btn.setOnAction(event -> {
+                        int nuevoEstado = e.getTxatBaimena() == 1 ? 0 : 1;
+                        if (db.updateChatBaimena(e.getId(), nuevoEstado)) {
+                            e.setTxatBaimena(nuevoEstado);
+                            actualizarBoton(e);
+                        }
+                    });
+                    setGraphic(btn);
+                }
+            }
+
+            private void actualizarBoton(Erabiltzailea e) {
+                if (e.getTxatBaimena() == 1) {
+                    btn.setText("✅ Gaituta");
+                    btn.setStyle("-fx-background-color: #DCFCE7; -fx-text-fill: #166534; -fx-font-size: 11;");
+                } else {
+                    btn.setText("❌ Desgaituta");
+                    btn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #991B1B; -fx-font-size: 11;");
+                }
+                btn.setPrefWidth(100);
+            }
+        });
+
+        kargatuDatuak();
+
+        txtBilatu.textProperty().addListener((obs, old, val) -> {
+            filtratua.setPredicate(l -> {
+                if (val == null || val.isEmpty()) return true;
+                String lower = val.toLowerCase();
+                return l.getIzena().toLowerCase().contains(lower) || 
+                       l.getAbizena().toLowerCase().contains(lower) ||
+                       l.getErabiltzailea().toLowerCase().contains(lower);
+            });
+        });
     }
 
-    @FXML
-    private void itxi() {
-        rol = null; 
-        ((Stage) btnUtzi.getScene().getWindow()).close();
+    private void kargatuDatuak() {
+        langileak = FXCollections.observableArrayList(db.getAll());
+        filtratua = new FilteredList<>(langileak, p -> true);
+        langileakTable.setItems(filtratua);
     }
 }
-
