@@ -3,6 +3,7 @@ package kontrola;
 import DatuBasea.KategoriakDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.fxml.FXML;
@@ -17,10 +18,11 @@ public class KategoriakController {
 
     @FXML private TableView<Kategoria> kategoriakTable;
     @FXML private TableColumn<Kategoria, String> colIzena;
-
+    @FXML private TextField txtBilatu;
     @FXML private Button btnAdd, btnEdit, btnDelete;
 
     private ObservableList<Kategoria> kategoriak;
+    private FilteredList<Kategoria> filtratua;
 
     @FXML
     public void initialize() {
@@ -28,6 +30,13 @@ public class KategoriakController {
         colIzena.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getIzena()));
 
         cargarDatos();
+
+        txtBilatu.textProperty().addListener((obs, old, val) -> {
+            filtratua.setPredicate(k -> {
+                if (val == null || val.isEmpty()) return true;
+                return k.getIzena().toLowerCase().contains(val.toLowerCase());
+            });
+        });
 
         
         kategoriakTable.setRowFactory(tv -> {
@@ -50,7 +59,8 @@ public class KategoriakController {
 
     private void cargarDatos() {
         kategoriak = FXCollections.observableArrayList(KategoriakDB.lortuKategoriak());
-        kategoriakTable.setItems(kategoriak);
+        filtratua = new FilteredList<>(kategoriak, k -> true);
+        kategoriakTable.setItems(filtratua);
     }
 
     private void actualizarBotones() {

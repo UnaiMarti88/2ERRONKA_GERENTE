@@ -16,6 +16,10 @@
                 <Label text="🔍" style="-fx-font-size: 16;"/>
                 <TextField fx:id="txtBilatu" promptText="Bilatu langilea..." prefWidth="250" styleClass="login-input"/>
             </HBox>
+            <Separator orientation="VERTICAL" />
+            <Button fx:id="btnAdd" text="Gehitu" onAction="#gehituLangilea" styleClass="action-button"/>
+            <Button fx:id="btnEdit" text="Editatu" onAction="#editatuLangilea" styleClass="action-button"/>
+            <Button fx:id="btnDelete" text="Ezabatu" onAction="#ezabatuLangilea" styleClass="action-button"/>
             <Pane HBox.hgrow="ALWAYS" />
             <Label text="Langileen Kudeaketa" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
         </ToolBar>
@@ -28,8 +32,8 @@
                 <TableColumn fx:id="colAbizena" text="Abizena" prefWidth="150"/>
                 <TableColumn fx:id="colErabiltzailea" text="Erabiltzailea" prefWidth="120"/>
                 <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
-                <TableColumn fx:id="colRola" text="Rola" prefWidth="120"/>
-                <TableColumn fx:id="colChat" text="Chat Baimena" prefWidth="120"/>
+                <TableColumn fx:id="colAppAccess" text="Aplikazioa" prefWidth="120"/>
+                <TableColumn fx:id="colChatAccess" text="Chat" prefWidth="120"/>
             </columns>
         </TableView>
     </center>

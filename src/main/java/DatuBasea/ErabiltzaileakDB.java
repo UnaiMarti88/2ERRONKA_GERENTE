@@ -2,6 +2,7 @@ package DatuBasea;
 
 import model.Erabiltzailea;
 import Util.Conn;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,14 +18,15 @@ public class ErabiltzaileakDB {
             WHERE erabiltzailea = ? AND pasahitza = ?
         """;
 
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, erabiltzaileIzena);
             ps.setString(2, pasahitza);
 
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return mapResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSet(rs);
+                }
             }
 
         } catch (SQLException e) {
@@ -35,9 +37,10 @@ public class ErabiltzaileakDB {
 
     public List<Erabiltzailea> getAll() {
         List<Erabiltzailea> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, abizena, erabiltzailea, pasahitza, email, telefonoa, baimena, mahaiak_id, txat_baimena FROM langileak ORDER BY id";
+        String sql = "SELECT id, izena, abizena, erabiltzailea, pasahitza, email, telefonoa, baimena, mahaiak_id, chat_baimena FROM langileak ORDER BY id";
 
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql);
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -53,11 +56,12 @@ public class ErabiltzaileakDB {
     public boolean insert(Erabiltzailea e) {
         String sql = """
             INSERT INTO langileak
-            (izena, abizena, erabiltzailea, pasahitza, email, telefonoa, baimena, mahaiak_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (izena, abizena, erabiltzailea, pasahitza, email, telefonoa, baimena, mahaiak_id, chat_baimena)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getIzena());
             ps.setString(2, e.getAbizena());
             ps.setString(3, e.getErabiltzailea());
@@ -70,6 +74,7 @@ public class ErabiltzaileakDB {
             } else {
                 ps.setNull(8, Types.INTEGER);
             }
+            ps.setInt(9, e.getTxatBaimena());
 
             return ps.executeUpdate() > 0;
 
@@ -83,11 +88,12 @@ public class ErabiltzaileakDB {
         String sql = """
             UPDATE langileak SET
             izena = ?, abizena = ?, erabiltzailea = ?,
-            pasahitza = ?, email = ?, telefonoa = ?, baimena = ?, mahaiak_id = ?
+            pasahitza = ?, email = ?, telefonoa = ?, baimena = ?, mahaiak_id = ?, chat_baimena = ?
             WHERE id = ?
         """;
 
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getIzena());
             ps.setString(2, e.getAbizena());
             ps.setString(3, e.getErabiltzailea());
@@ -100,7 +106,8 @@ public class ErabiltzaileakDB {
             } else {
                 ps.setNull(8, Types.INTEGER);
             }
-            ps.setInt(9, e.getId());
+            ps.setInt(9, e.getTxatBaimena());
+            ps.setInt(10, e.getId());
 
             return ps.executeUpdate() > 0;
 
@@ -113,7 +120,8 @@ public class ErabiltzaileakDB {
     public boolean delete(int id) {
         String sql = "DELETE FROM langileak WHERE id = ?";
 
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
 
@@ -134,13 +142,27 @@ public class ErabiltzaileakDB {
             rs.getString("telefonoa"),
             rs.getInt("baimena"),
             rs.getObject("mahaiak_id") != null ? rs.getInt("mahaiak_id") : null,
-            rs.getInt("txat_baimena")
+            rs.getInt("chat_baimena")
         );
     }
 
     public boolean updateChatBaimena(int langileaId, int baimena) {
-        String sql = "UPDATE langileak SET txat_baimena = ? WHERE id = ?";
-        try (PreparedStatement ps = Conn.getConnection().prepareStatement(sql)) {
+        String sql = "UPDATE langileak SET chat_baimena = ? WHERE id = ?";
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, baimena);
+            ps.setInt(2, langileaId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateAppBaimena(int langileaId, int baimena) {
+        String sql = "UPDATE langileak SET baimena = ? WHERE id = ?";
+        try (Connection conn = Conn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, baimena);
             ps.setInt(2, langileaId);
             return ps.executeUpdate() > 0;

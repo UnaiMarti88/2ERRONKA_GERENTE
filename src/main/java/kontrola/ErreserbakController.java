@@ -27,7 +27,7 @@ public class ErreserbakController {
     @FXML private TableColumn<Erreserba, String> colMota;
     @FXML private TableColumn<Erreserba, String> colBezeroa;
     @FXML private TableColumn<Erreserba, String> colMahaia;
-    @FXML private TextField txtBuscar;
+    @FXML private TextField txtBilatu;
     @FXML private Button btnAdd;
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
@@ -47,7 +47,7 @@ public class ErreserbakController {
         filtratua = new FilteredList<>(erreserbak, p -> true);
         erreserbakTable.setItems(filtratua);
 
-        txtBuscar.textProperty().addListener((obs, oldVal, newVal) -> aplikatuFiltro());
+        txtBilatu.textProperty().addListener((obs, oldVal, newVal) -> aplikatuFiltro());
 
         erreserbakTable.setRowFactory(tv -> {
             TableRow<Erreserba> row = new TableRow<>();
@@ -64,7 +64,7 @@ public class ErreserbakController {
     }
 
     private void aplikatuFiltro() {
-        String bilaketa = txtBuscar.getText() == null ? "" : txtBuscar.getText().toLowerCase().trim();
+        String bilaketa = txtBilatu.getText() == null ? "" : txtBilatu.getText().toLowerCase().trim();
 
         filtratua.setPredicate(erreserba -> {
             if (bilaketa.isEmpty()) {

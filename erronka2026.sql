@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: localhost    Database: erronka2026_definitibo
+-- Host: localhost    Database: erronka2026
 -- ------------------------------------------------------
 -- Server version	8.0.39
 
@@ -150,11 +150,11 @@ CREATE TABLE `langileak` (
   `telefonoa` varchar(9) DEFAULT NULL,
   `baimena` tinyint DEFAULT NULL,
   `mahaiak_id` int DEFAULT NULL,
-  `txat_baimena` tinyint DEFAULT '1',
+  `chat_baimena` tinyint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_langileak_mahaiak_idx` (`mahaiak_id`),
   CONSTRAINT `fk_langileak_mahaiak` FOREIGN KEY (`mahaiak_id`) REFERENCES `langileak` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `langileak` (
 
 LOCK TABLES `langileak` WRITE;
 /*!40000 ALTER TABLE `langileak` DISABLE KEYS */;
-INSERT INTO `langileak` VALUES (6,'Oier','Talavera','Muñoa','1234','munoatala@shushinelli.com','888665533',1,6),(7,'Iraitz','Guisado','Guisi','567','guisado@shushinelli.com','554477332',0,NULL);
+INSERT INTO `langileak` VALUES (6,'Oier','Talavera','Muñoa','1234','aoao','67674312',1,6,1);
 /*!40000 ALTER TABLE `langileak` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,7 +188,7 @@ CREATE TABLE `mahaiak` (
 
 LOCK TABLES `mahaiak` WRITE;
 /*!40000 ALTER TABLE `mahaiak` DISABLE KEYS */;
-INSERT INTO `mahaiak` VALUES (1,'Mahaia 1',NULL),(2,'Mahaia 2',NULL),(3,'Mahaia 3',NULL),(4,'Mahaia 4',NULL),(5,'Mahaia 5',NULL),(6,'Barra',NULL);
+INSERT INTO `mahaiak` VALUES (1,'Mahaia 1',NULL),(2,'Mahaia 2',NULL),(3,'Mahaia 3',NULL),(4,'Mahaia 4',NULL),(5,'Mahaia 5',NULL),(6,'Barra','libre');
 /*!40000 ALTER TABLE `mahaiak` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +203,8 @@ CREATE TABLE `platerak` (
   `id` int NOT NULL AUTO_INCREMENT,
   `izena` varchar(45) DEFAULT NULL,
   `mota` varchar(45) DEFAULT NULL,
-  `perezioa` float DEFAULT NULL,
+  `prezioa` float DEFAULT NULL,
+  `argazkia` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -270,7 +271,7 @@ CREATE TABLE `produktuak` (
 
 LOCK TABLES `produktuak` WRITE;
 /*!40000 ALTER TABLE `produktuak` DISABLE KEYS */;
-INSERT INTO `produktuak` VALUES (6,'Ardoa',6,2,'ardoa.png',6),(7,'Kafea',2,5,'kafea.png',6),(8,'Estrella',2,6,'estrella.png',6),(49,'Sagardo',3.5,11,'Sagardo.png',6),(50,'Kas Laranja',2,6,'Kas_Laranja.png',6),(51,'Aquarius',2.2,9,'Aquarius.png',6),(52,'Coca-Cola',2.1,15,'Coca-Cola.png',6),(53,'Nestea',2.3,7,'Nestea.png',6),(54,'Fanta Limon',2,0,'Fanta_Limon.png',6),(55,'Agua Bezoya',1.2,10,'Agua_Bezoya.png',6),(56,'Red Bull',2.5,5,'Red_Bull.png',6),(57,'Zumo Laranja',2.8,9,'Zumo_Laranja.png',6),(58,'Kas Limón',2,10,'Kas_Limon.png',6),(59,'Sugus',1.5,13,'Sugus.png',7),(60,'Haribo Gominolas',2,10,'Haribo_Gominolas.png',7),(61,'KitKat',1.2,6,'KitKat.png',7),(62,'Kinder Bueno',1.5,8,'Kinder_Bueno.png',7),(63,'Txupa Txups',0.8,18,'Txupa_Txups.png',7),(64,'Oreo',1.7,7,'Oreo.png',7),(65,'Donuts',1.5,5,'Donuts.png',7),(66,'Milka Txokolatea',2.2,9,'Milka_Txokolatea.png',7),(67,'M&M',1.9,13,'M&M.png',7),(68,'Twix',1.4,4,'Twix.png',7);
+INSERT INTO `produktuak` VALUES (6,'Ardoa',6,0,'ardoa.png',6),(7,'Kafea',2,5,'kafea.png',6),(8,'Estrella',2,6,'estrella.png',6),(49,'Sagardo',3.5,11,'Sagardo.png',6),(50,'Kas Laranja',2,4,'Kas_Laranja.png',6),(51,'Aquarius',2.2,9,'Aquarius.png',6),(52,'Coca-Cola',2.1,15,'Coca-Cola.png',6),(53,'Nestea',2.3,7,'Nestea.png',6),(54,'Fanta Limon',2,0,'Fanta_Limon.png',6),(55,'Agua Bezoya',1.2,10,'Agua_Bezoya.png',6),(56,'Red Bull',2.5,5,'Red_Bull.png',6),(57,'Zumo Laranja',2.8,9,'Zumo_Laranja.png',6),(58,'Kas Limón',2,10,'Kas_Limon.png',6),(59,'Sugus',1.5,13,'Sugus.png',7),(60,'Haribo Gominolas',2,10,'Haribo_Gominolas.png',7),(61,'KitKat',1.2,6,'KitKat.png',7),(62,'Kinder Bueno',1.5,8,'Kinder_Bueno.png',7),(63,'Txupa Txups',0.8,18,'Txupa_Txups.png',7),(64,'Oreo',1.7,7,'Oreo.png',7),(65,'Donuts',1.5,5,'Donuts.png',7),(66,'Milka Txokolatea',2.2,9,'Milka_Txokolatea.png',7),(67,'M&M',1.9,13,'M&M.png',7),(68,'Twix',1.4,4,'Twix.png',7);
 /*!40000 ALTER TABLE `produktuak` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +345,7 @@ CREATE TABLE `zerbitzua` (
   KEY `fk_zerbitzua_erreserbak_idx` (`erreserba_id`),
   CONSTRAINT `fk_zerbitzua_erreserbak` FOREIGN KEY (`erreserba_id`) REFERENCES `erreserbak` (`id`),
   CONSTRAINT `fk_zerbitzua_mahaiak1` FOREIGN KEY (`mahaiak_id`) REFERENCES `mahaiak` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +354,7 @@ CREATE TABLE `zerbitzua` (
 
 LOCK TABLES `zerbitzua` WRITE;
 /*!40000 ALTER TABLE `zerbitzua` DISABLE KEYS */;
-INSERT INTO `zerbitzua` VALUES (85,4,'2026-01-21 13:10:14',1,NULL,6),(86,4,'2026-01-21 13:17:17',1,NULL,6),(87,8,'2026-01-21 13:26:27',1,NULL,6),(88,8,'2026-01-21 14:20:53',1,NULL,6),(89,8,'2026-01-21 15:02:39',1,NULL,6),(90,4,'2026-01-21 15:08:30',1,NULL,6),(91,8,'2026-01-21 15:26:52',1,NULL,6),(92,8,'2026-01-22 15:41:13',1,NULL,6),(93,8,'2026-01-26 12:14:20',1,NULL,6),(94,4,'2026-01-28 17:31:37',1,NULL,6),(95,8,'2026-01-28 18:12:37',1,NULL,6),(96,11.5,'2026-01-28 19:27:23',1,NULL,6),(97,10,'2026-01-29 21:27:03',1,NULL,6),(99,2.7,'2026-03-25 13:18:42',1,NULL,6);
+INSERT INTO `zerbitzua` VALUES (85,4,'2026-01-21 13:10:14',1,NULL,6),(86,4,'2026-01-21 13:17:17',1,NULL,6),(87,8,'2026-01-21 13:26:27',1,NULL,6),(88,8,'2026-01-21 14:20:53',1,NULL,6),(89,8,'2026-01-21 15:02:39',1,NULL,6),(90,4,'2026-01-21 15:08:30',1,NULL,6),(91,8,'2026-01-21 15:26:52',1,NULL,6),(92,8,'2026-01-22 15:41:13',1,NULL,6),(93,8,'2026-01-26 12:14:20',1,NULL,6),(94,4,'2026-01-28 17:31:37',1,NULL,6),(95,8,'2026-01-28 18:12:37',1,NULL,6),(96,11.5,'2026-01-28 19:27:23',1,NULL,6),(97,10,'2026-01-29 21:27:03',1,NULL,6),(99,2.7,'2026-03-25 13:18:42',1,NULL,6),(100,8,'2026-04-16 06:33:11',1,NULL,6),(101,8,'2026-04-16 07:12:42',1,NULL,6);
 /*!40000 ALTER TABLE `zerbitzua` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -366,4 +367,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-15 16:16:28
+-- Dump completed on 2026-04-16 14:04:09

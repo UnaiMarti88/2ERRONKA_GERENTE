@@ -198,13 +198,39 @@
     -fx-font-weight: bold;
 }
 
+/* 🔹 ToolBar y Botones de Acción */
+.tool-bar {
+    -fx-background-color: white;
+    -fx-padding: 10 20;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2);
+}
+
+.action-button {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #F57C00;
+}
+
+.action-button:disabled {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #94A3B8;
+}
+
 .login-input {
-    -fx-background-color: #FFF7ED;
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
     -fx-border-color: transparent;
     -fx-border-width: 1.2;
-    -fx-padding: 12 14;
+    -fx-padding: 8 12;
     -fx-font-size: 13px;
     -fx-text-fill: #0F172A;
 }

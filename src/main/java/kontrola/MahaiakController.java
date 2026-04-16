@@ -3,6 +3,7 @@ package kontrola;
 import DatuBasea.MahaiakDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,9 +19,11 @@ public class MahaiakController {
     @FXML private TableView<Mahaia> mahaiakTable;
     @FXML private TableColumn<Mahaia, String> colIzena;
     @FXML private TableColumn<Mahaia, String> colEgoera;
+    @FXML private TextField txtBilatu;
     @FXML private Button btnAdd, btnEdit, btnDelete;
 
     private ObservableList<Mahaia> mahaiak;
+    private FilteredList<Mahaia> filtratua;
 
     @FXML
     public void initialize() {
@@ -28,6 +31,15 @@ public class MahaiakController {
         colEgoera.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getEgoera()));
 
         kargatuDatuak();
+
+        txtBilatu.textProperty().addListener((obs, old, val) -> {
+            filtratua.setPredicate(m -> {
+                if (val == null || val.isEmpty()) return true;
+                String lower = val.toLowerCase();
+                return m.getIzena().toLowerCase().contains(lower) || 
+                       m.getEgoera().toLowerCase().contains(lower);
+            });
+        });
 
         mahaiakTable.setRowFactory(tv -> {
             TableRow<Mahaia> row = new TableRow<>();
@@ -46,7 +58,8 @@ public class MahaiakController {
 
     private void kargatuDatuak() {
         mahaiak = FXCollections.observableArrayList(MahaiakDB.lortuMahaiak());
-        mahaiakTable.setItems(mahaiak);
+        filtratua = new FilteredList<>(mahaiak, m -> true);
+        mahaiakTable.setItems(filtratua);
     }
 
     private void botoiakAktualizatu() {

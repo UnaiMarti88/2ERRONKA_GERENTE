@@ -10,17 +10,19 @@
             prefHeight="500">
 
     <top>
-        <ToolBar>
-            <Label text="Bilatu:"/>
-            <TextField fx:id="txtBilatu" promptText="Produktuaren izena"/>
-
-            <Button fx:id="btnAdd" text="Gehitu" onAction="#gehituProduktua"/>
-            <Button fx:id="btnEdit" text="Editatu" onAction="#editatuProduktua"/>
-            <Button fx:id="btnDelete" text="Ezabatu" onAction="#ezabatuProduktua"/>
+        <ToolBar styleClass="tool-bar">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="🔍" style="-fx-font-size: 16;"/>
+                <TextField fx:id="txtBilatu" promptText="Bilatu produktua..." prefWidth="250" styleClass="login-input"/>
+            </HBox>
+            <Separator orientation="VERTICAL" />
+            <Button fx:id="btnAdd" text="Gehitu" onAction="#gehituProduktua" styleClass="action-button"/>
+            <Button fx:id="btnEdit" text="Editatu" onAction="#editatuProduktua" styleClass="action-button"/>
+            <Button fx:id="btnDelete" text="Ezabatu" onAction="#ezabatuProduktua" styleClass="action-button"/>
 
             <Separator orientation="VERTICAL"/>
 
-            <Label text="Mota:"/>
+            <Label text="Mota:" style="-fx-font-weight: bold;"/>
             <ComboBox fx:id="cmbMotak" prefWidth="150"/>
         </ToolBar>
     </top>

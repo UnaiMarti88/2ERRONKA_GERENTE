@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" styleClass="dialog-form-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="kontrola.LangileFormController">
+    <padding>
+        <Insets top="30" right="40" bottom="30" left="40"/>
+    </padding>
+
+    <Label text="Langilearen Datuak" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+
+    <GridPane hgap="15" vgap="15" styleClass="dialog-form-grid">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" prefWidth="120" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="250" />
+        </columnConstraints>
+
+        <Label text="Izena:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtIzena" promptText="Sartu izena" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Abizena:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtAbizena" promptText="Sartu abizena" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Erabiltzailea:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtErabiltzailea" promptText="Sartu erabiltzaile izena" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Pasahitza:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <PasswordField fx:id="txtPasahitza" promptText="Sartu pasahitza" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Email:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtEmail" promptText="Sartu emaila" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Telefonoa:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTelefonoa" promptText="Sartu telefonoa" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="Baimenak:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <HBox spacing="20" alignment="CENTER_LEFT" GridPane.rowIndex="6" GridPane.columnIndex="1">
+            <CheckBox fx:id="chkAppAccess" text="Aplikaziorako sarbidea"/>
+            <CheckBox fx:id="chkChatAccess" text="Chaterako sarbidea"/>
+        </HBox>
+    </GridPane>
+
+    <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="dialog-form-actions">
+        <Button text="Utzi" onAction="#itxi" style="-fx-background-color: #F1F5F9; -fx-text-fill: #475569; -fx-padding: 10 25; -fx-background-radius: 8;"/>
+        <Button text="Gorde" onAction="#gordeLangilea" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-padding: 10 25; -fx-background-radius: 8; -fx-font-weight: bold;"/>
+    </HBox>
+</VBox>
