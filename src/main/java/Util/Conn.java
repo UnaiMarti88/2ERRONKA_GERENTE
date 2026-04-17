@@ -11,7 +11,7 @@ public class Conn {
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
             + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
     private static final String USER = getConfig("DB_USER", "root");
-    private static final String PASSWORD = getConfig("DB_PASSWORD", "1MG2024");
+    private static final String PASSWORD = getConfig("DB_PASSWORD", "root");
     
 
     static {

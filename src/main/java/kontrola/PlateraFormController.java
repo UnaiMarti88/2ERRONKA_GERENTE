@@ -11,6 +11,7 @@ import model.Platera;
 import model.Produktuak;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlateraFormController {
 
@@ -39,16 +40,39 @@ public class PlateraFormController {
 
     @FXML
     private void gehituProduktua() {
-        List<Produktuak> guztiak = ProduktuakDB.lortuProduktuak();
-        
-        // Custom Dialog for multiple selection or at least better UX
-        ChoiceDialog<Produktuak> dialog = new ChoiceDialog<>(null, guztiak);
+        List<Produktuak> guztiak = ProduktuakDB.lortuProduktuak().stream()
+                .filter(p -> p.getProduktuenMotakId() == 8)
+                .collect(Collectors.toList());
+
+        if (guztiak.isEmpty()) {
+            alerta("Ez da osagai motako produkturik aurkitu.");
+            return;
+        }
+
+        Dialog<Produktuak> dialog = new Dialog<>();
         dialog.setTitle("Gehitu osagaia");
         dialog.setHeaderText("Aukeratu platerari gehitzeko produktua");
-        
-        // Use a cell factory to show names in the ChoiceDialog
-        dialog.getDialogPane().lookup(".combo-box"); 
-        
+
+        ButtonType gehituType = new ButtonType("Gehitu", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(gehituType, ButtonType.CANCEL);
+
+        ListView<Produktuak> listView = new ListView<>(FXCollections.observableArrayList(guztiak));
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listView.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Produktuak item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getIzena());
+            }
+        });
+
+        dialog.getDialogPane().setContent(listView);
+
+        javafx.scene.Node okButton = dialog.getDialogPane().lookupButton(gehituType);
+        okButton.disableProperty().bind(listView.getSelectionModel().selectedItemProperty().isNull());
+
+        dialog.setResultConverter(buttonType -> buttonType == gehituType ? listView.getSelectionModel().getSelectedItem() : null);
+
         dialog.showAndWait().ifPresent(p -> {
             if (p != null && !platerakoProduktuak.stream().anyMatch(existing -> existing.getId() == p.getId())) {
                 platerakoProduktuak.add(p);
@@ -79,20 +103,10 @@ public class PlateraFormController {
             editatzen.setMota(mota);
             editatzen.setPrezioa(Double.parseDouble(prezioStr));
 
-            int id;
-            if (editatzen.getId() == 0) {
-                id = PlaterakDB.gehitu(editatzen);
-            } else {
-                id = editatzen.getId();
-                PlaterakDB.eguneratu(editatzen);
-            }
-
-            if (id != -1) {
-                PlaterakDB.ezabatuPlaterakoProduktuak(id);
-                for (Produktuak p : platerakoProduktuak) {
-                    PlaterakDB.gehituPlaterariProduktua(id, p.getId());
-                }
+            if (PlaterakDB.gordePlatera(editatzen, platerakoProduktuak)) {
                 itxi();
+            } else {
+                alerta("Ezin izan da platera gorde datu-basean.");
             }
         } catch (NumberFormatException e) {
             alerta("Prezioa ez da zenbaki balioduna.");

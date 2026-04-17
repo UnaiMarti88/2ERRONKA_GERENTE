@@ -11,7 +11,7 @@ public class PlaterakDB {
 
     public static List<Platera> lortuGuztiak() {
         List<Platera> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, mota, perezioa FROM platerak";
+        String sql = "SELECT id, izena, mota, prezioa FROM platerak";
 
         try (Connection conn = Conn.getConnection();
              Statement st = conn.createStatement();
@@ -22,7 +22,7 @@ public class PlaterakDB {
                 p.setId(rs.getInt("id"));
                 p.setIzena(rs.getString("izena"));
                 p.setMota(rs.getString("mota"));
-                p.setPrezioa(rs.getDouble("perezioa"));
+                p.setPrezioa(rs.getDouble("prezioa"));
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -58,7 +58,7 @@ public class PlaterakDB {
     }
 
     public static void eguneratu(Platera p) {
-        String sql = "UPDATE platerak SET izena=?, mota=?, perezioa=? WHERE id=?";
+        String sql = "UPDATE platerak SET izena=?, mota=?, prezioa=? WHERE id=?";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -71,6 +71,80 @@ public class PlaterakDB {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean gordePlatera(Platera p, List<model.Produktuak> produktuak) {
+        Connection conn = null;
+        try {
+            conn = Conn.getConnection();
+            conn.setAutoCommit(false);
+            
+            int id = p.getId();
+            
+            // Insertar o actualizar platera
+            if (id == 0) {
+                String insertSql = "INSERT INTO platerak (izena, mota, prezioa) VALUES (?, ?, ?)";
+                PreparedStatement ps = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, p.getIzena());
+                ps.setString(2, p.getMota());
+                ps.setDouble(3, p.getPrezioa());
+                ps.executeUpdate();
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    id = rs.getInt(1);
+                    p.setId(id);
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    return false;
+                }
+                rs.close();
+                ps.close();
+            } else {
+                String updateSql = "UPDATE platerak SET izena=?, mota=?, prezioa=? WHERE id=?";
+                PreparedStatement ps = conn.prepareStatement(updateSql);
+                ps.setString(1, p.getIzena());
+                ps.setString(2, p.getMota());
+                ps.setDouble(3, p.getPrezioa());
+                ps.setInt(4, id);
+                ps.executeUpdate();
+                ps.close();
+            }
+            
+            // Eliminar links anteriores
+            String deleteLinksSql = "DELETE FROM produktuak_has_platerak WHERE platerak_id = ?";
+            PreparedStatement psDelete = conn.prepareStatement(deleteLinksSql);
+            psDelete.setInt(1, id);
+            psDelete.executeUpdate();
+            psDelete.close();
+            
+            // Insertar nuevos links
+            String insertLinkSql = "INSERT INTO produktuak_has_platerak (platerak_id, produktuak_id) VALUES (?, ?)";
+            PreparedStatement psInsertLink = conn.prepareStatement(insertLinkSql);
+            for (model.Produktuak produktua : produktuak) {
+                psInsertLink.setInt(1, id);
+                psInsertLink.setInt(2, produktua.getId());
+                psInsertLink.addBatch();
+            }
+            psInsertLink.executeBatch();
+            psInsertLink.close();
+            
+            conn.commit();
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 

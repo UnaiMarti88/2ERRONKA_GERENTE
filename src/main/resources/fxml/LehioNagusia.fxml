@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -21,7 +23,15 @@
                 <VBox spacing="15" styleClass="left-vbox">
 
                     <!-- Logo / título -->
-                    <Label text="NovaFrame" />
+                    <ImageView fitHeight="90.0" preserveRatio="true" smooth="true" styleClass="main-logo-image">
+                        <image>
+                            <Image url="@../img/logo2erronkabien.png" />
+                        </image>
+                    </ImageView>
+
+                    <Label text="Musinelli" styleClass="main-brand-title" />
+
+                    <Label text="Modern Italian Cuisine" styleClass="main-brand-tagline" />
 
                     <Label text="" style="-fx-padding: 10 0 0 0;" />
 

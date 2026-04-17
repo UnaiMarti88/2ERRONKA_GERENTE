@@ -53,7 +53,7 @@ public class LehioNagusiaController {
             scene.getStylesheets().add(getClass().getResource("/css/estilo.css").toExternalForm());
             
             javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setTitle("NovaFrame - Login");
+            stage.setTitle("Musinelli - Login");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();

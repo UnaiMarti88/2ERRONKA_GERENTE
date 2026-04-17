@@ -38,17 +38,19 @@
 
                                 <VBox alignment="CENTER" spacing="12.0">
                                     <children>
-                                        <ImageView fitHeight="128.0" preserveRatio="true" smooth="true" styleClass="login-logo-image">
+                                        <ImageView fitHeight="130.0" preserveRatio="true" smooth="true" styleClass="login-logo-image">
                                             <image>
-                                                <Image url="@../img/NovaFrameLabs-clean.png" />
+                                                <Image url="@../img/logo2erronkabien.png" />
                                             </image>
                                         </ImageView>
 
-                                        <Label text="NovaFrame" styleClass="login-brand">
+                                        <Label text="Musinelli" styleClass="login-brand">
                                             <font>
-                                                <Font size="28.0" />
+                                                <Font size="32.0" />
                                             </font>
                                         </Label>
+
+                                        <Label text="Modern Italian Cuisine" styleClass="login-tagline" />
                                     </children>
                                 </VBox>
                             </children>

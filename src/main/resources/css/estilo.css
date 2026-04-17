@@ -10,44 +10,56 @@
 
 /* Fondo general */
 .root {
-    -fx-background-color: #F4F7FB;
+    -fx-background-color: linear-gradient(to bottom, #F4F7FB, #F1F3FF);
 }
 
 /* 🔹 Barra lateral izquierda */
 .left-vbox {
-    -fx-background-color: linear-gradient(to bottom right, #FFB74D, #FF9800 56%, #F57C00);
-    -fx-padding: 25;
-    -fx-spacing: 15;
-    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.18), 18, 0.18, 4, 0);
+    -fx-background-color: linear-gradient(to bottom right, #0D0B11, #1B172C 65%, #231C3B);
+    -fx-padding: 28;
+    -fx-spacing: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.24), 28, 0.18, 0, 10);
 }
 
-/* Título NovaFrame */
+.main-brand-title,
 .left-vbox .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #FFD36A;
     -fx-font-size: 26px;
     -fx-font-weight: bold;
+    -fx-letter-spacing: 0.8px;
+}
+
+.main-brand-tagline {
+    -fx-text-fill: #E5C676;
+    -fx-font-size: 12px;
+    -fx-opacity: 0.9;
+    -fx-padding: 4 0 0 0;
+}
+
+.main-logo-image {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 18, 0.18, 0, 6);
 }
 
 /* Botones de la barra lateral */
 .left-button {
     -fx-font-size: 18px;
     -fx-text-fill: white;
-    -fx-background-color: rgba(255, 255, 255, 0.08);
-    -fx-background-radius: 12;
+    -fx-background-color: rgba(255, 255, 255, 0.09);
+    -fx-background-radius: 14;
     -fx-border-color: transparent;
-    -fx-border-radius: 12;
-    -fx-padding: 12 14 12 14;
+    -fx-border-radius: 14;
+    -fx-padding: 14 16 14 16;
     -fx-cursor: hand;
 }
 
 /* Hover profesional */
 .left-button:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.22);
-    -fx-border-color: rgba(255, 255, 255, 0.22);
-    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.22), 10, 0.12, 0, 3);
-    -fx-text-fill: #FFF7ED;
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.05;
+    -fx-background-color: rgba(255, 255, 255, 0.24);
+    -fx-border-color: rgba(255, 255, 255, 0.24);
+    -fx-effect: dropshadow(gaussian, rgba(107, 84, 255, 0.22), 12, 0.14, 0, 4);
+    -fx-text-fill: #FFFFFF;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .left-button:focused,
@@ -76,7 +88,7 @@
 .content-placeholder {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-text-fill: #48627E;
+    -fx-text-fill: #3F3D56;
 }
 
 .dialog-form-root {
@@ -133,15 +145,20 @@
 }
 
 .login-showcase {
-    -fx-background-color: linear-gradient(to bottom right, #FFB74D, #FF9800 56%, #F57C00);
+    -fx-background-color: #0E0C12;
     -fx-background-radius: 30 0 0 30;
-    -fx-padding: 28 24 28 24;
+    -fx-padding: 42 36 42 36;
+    -fx-border-color: rgba(255, 211, 106, 0.14);
+    -fx-border-width: 1;
 }
 
 .login-form-shell {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 30 30 0;
     -fx-padding: 44 42 42 42;
+    -fx-border-color: rgba(255, 211, 106, 0.18);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.12), 24, 0.14, 0, 10);
 }
 
 .login-orb {
@@ -181,9 +198,17 @@
 }
 
 .login-brand {
-    -fx-text-fill: white;
+    -fx-text-fill: #F9E0A8;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(30,41,59,0.14), 10, 0.12, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(255,209,106,0.22), 14, 0.16, 0, 2);
+    -fx-letter-spacing: 0.8px;
+}
+
+.login-tagline {
+    -fx-text-fill: #D9C38D;
+    -fx-font-size: 14px;
+    -fx-padding: 4 0 0 0;
+    -fx-letter-spacing: 0.2px;
 }
 
 .login-form-title {
@@ -242,16 +267,16 @@
 }
 
 .login-button {
-    -fx-background-color: #F57C00;
-    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to right, #C19125, #E7B24D);
+    -fx-text-fill: #111111;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 18;
     -fx-padding: 12 20;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(245,124,0,0.22), 14, 0.14, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(193,145,37,0.28), 16, 0.16, 0, 6);
 }
 
 .login-button:hover {
-    -fx-background-color: #E65100;
+    -fx-background-color: linear-gradient(to right, #E7B24D, #FFC658);
 }

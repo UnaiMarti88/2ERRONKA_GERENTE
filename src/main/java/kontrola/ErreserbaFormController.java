@@ -138,17 +138,3 @@ public class ErreserbaFormController {
         stage.close();
     }
 }
-        erreserba.setPrezioTotala(prezioTotala);
-        erreserba.setOrdainduta(chkOrdainduta.isSelected());
-        erreserba.setFakturaRuta(txtFakturaRuta.getText().trim().isEmpty() ? null : txtFakturaRuta.getText().trim());
-        erreserba.setLangileaId(cmbLangilea.getValue().getId());
-        erreserba.setMahaiaId(cmbMahaia.getValue().getId());
-        itxi();
-    }
-
-    @FXML
-    private void itxi() {
-        Stage stage = (Stage) txtBezeroIzena.getScene().getWindow();
-        stage.close();
-    }
-}
