@@ -18,7 +18,9 @@ public class MahaiakController {
 
     @FXML private TableView<Mahaia> mahaiakTable;
     @FXML private TableColumn<Mahaia, String> colIzena;
-    @FXML private TableColumn<Mahaia, String> colEgoera;
+    @FXML private TableColumn<Mahaia, String> colErabiltzailea;
+    @FXML private TableColumn<Mahaia, String> colPasahitza;
+    @FXML private TableColumn<Mahaia, Void> colChatAccess;
     @FXML private TextField txtBilatu;
     @FXML private Button btnAdd, btnEdit, btnDelete;
 
@@ -28,7 +30,43 @@ public class MahaiakController {
     @FXML
     public void initialize() {
         colIzena.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getIzena()));
-        colEgoera.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getEgoera()));
+        colErabiltzailea.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getErabiltzailea()));
+        colPasahitza.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getPasahitza()));
+
+        // Botón toggle para el chat
+        colChatAccess.setCellFactory(param -> new TableCell<>() {
+            private final Button btn = new Button();
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Mahaia m = getTableView().getItems().get(getIndex());
+                    actualizarBotonChat(m);
+                    btn.setOnAction(event -> {
+                        int nuevoEstado = m.getChatBaimena() == 1 ? 0 : 1;
+                        if (MahaiakDB.updateChatBaimena(m.getId(), nuevoEstado)) {
+                            m.setChatBaimena(nuevoEstado);
+                            actualizarBotonChat(m);
+                        }
+                    });
+                    setGraphic(btn);
+                }
+            }
+
+            private void actualizarBotonChat(Mahaia m) {
+                if (m.getChatBaimena() == 1) {
+                    btn.setText("✅ Bai");
+                    btn.setStyle("-fx-background-color: #DCFCE7; -fx-text-fill: #166534; -fx-font-size: 11;");
+                } else {
+                    btn.setText("❌ Ez");
+                    btn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #991B1B; -fx-font-size: 11;");
+                }
+                btn.setPrefWidth(100);
+            }
+        });
 
         kargatuDatuak();
 
@@ -37,7 +75,7 @@ public class MahaiakController {
                 if (val == null || val.isEmpty()) return true;
                 String lower = val.toLowerCase();
                 return m.getIzena().toLowerCase().contains(lower) || 
-                       m.getEgoera().toLowerCase().contains(lower);
+                       (m.getErabiltzailea() != null && m.getErabiltzailea().toLowerCase().contains(lower));
             });
         });
 

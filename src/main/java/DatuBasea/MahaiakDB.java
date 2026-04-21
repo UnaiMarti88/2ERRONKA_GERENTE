@@ -11,17 +11,22 @@ public class MahaiakDB {
 
     public static List<Mahaia> lortuMahaiak() {
         List<Mahaia> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, egoera FROM mahaiak";
+        String sql = "SELECT id, izena, erabiltzailea, pasahitza, chat_baimena FROM mahaiak";
 
         try (Connection c = Conn.getConnection();
              Statement st = c.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
+                String chatBaimenaStr = rs.getString("chat_baimena");
+                int chatBaimena = (chatBaimenaStr != null && (chatBaimenaStr.equals("1") || chatBaimenaStr.equalsIgnoreCase("true"))) ? 1 : 0;
+                
                 lista.add(new Mahaia(
                         rs.getInt("id"),
                         rs.getString("izena"),
-                        rs.getString("egoera")
+                        rs.getString("erabiltzailea"),
+                        rs.getString("pasahitza"),
+                        chatBaimena
                 ));
             }
 
@@ -33,13 +38,15 @@ public class MahaiakDB {
     }
 
     public static int gehituMahai(Mahaia m) {
-        String sql = "INSERT INTO mahaiak (izena, egoera) VALUES (?, ?)";
+        String sql = "INSERT INTO mahaiak (izena, erabiltzailea, pasahitza, chat_baimena) VALUES (?, ?, ?, ?)";
 
         try (Connection c = Conn.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, m.getIzena());
-            ps.setString(2, m.getEgoera());
+            ps.setString(2, m.getErabiltzailea());
+            ps.setString(3, m.getPasahitza());
+            ps.setString(4, String.valueOf(m.getChatBaimena()));
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -53,18 +60,33 @@ public class MahaiakDB {
     }
 
     public static void eguneratuMahai(Mahaia m) {
-        String sql = "UPDATE mahaiak SET izena=?, egoera=? WHERE id=?";
+        String sql = "UPDATE mahaiak SET izena=?, erabiltzailea=?, pasahitza=?, chat_baimena=? WHERE id=?";
 
         try (Connection c = Conn.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, m.getIzena());
-            ps.setString(2, m.getEgoera());
-            ps.setInt(3, m.getId());
+            ps.setString(2, m.getErabiltzailea());
+            ps.setString(3, m.getPasahitza());
+            ps.setString(4, String.valueOf(m.getChatBaimena()));
+            ps.setInt(5, m.getId());
             ps.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean updateChatBaimena(int id, int nuevoEstado) {
+        String sql = "UPDATE mahaiak SET chat_baimena = ? WHERE id = ?";
+        try (Connection c = Conn.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, String.valueOf(nuevoEstado));
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

@@ -29,7 +29,9 @@
         <TableView fx:id="mahaiakTable" prefHeight="300">
             <columns>
                 <TableColumn fx:id="colIzena" text="Izena" prefWidth="160"/>
-                <TableColumn fx:id="colEgoera" text="Egoera" prefWidth="200"/>
+                <TableColumn fx:id="colErabiltzailea" text="Erabiltzailea" prefWidth="160"/>
+                <TableColumn fx:id="colPasahitza" text="Pasahitza" prefWidth="160"/>
+                <TableColumn fx:id="colChatAccess" text="Chat Baimena" prefWidth="120" style="-fx-alignment: CENTER;"/>
             </columns>
         </TableView>
     </center>

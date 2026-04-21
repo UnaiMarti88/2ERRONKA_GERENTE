@@ -66,14 +66,14 @@ public class ErreserbaFormController {
             @Override
             protected void updateItem(Mahaia item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getIzena() + " - " + item.getEgoera());
+                setText(empty || item == null ? null : item.getIzena() + " (" + item.getErabiltzailea() + ")");
             }
         });
         cmbMahaia.setButtonCell(new javafx.scene.control.ListCell<>() {
             @Override
             protected void updateItem(Mahaia item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getIzena() + " - " + item.getEgoera());
+                setText(empty || item == null ? null : item.getIzena() + " (" + item.getErabiltzailea() + ")");
             }
         });
     }

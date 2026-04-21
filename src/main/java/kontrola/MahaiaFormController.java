@@ -10,7 +10,9 @@ import model.Mahaia;
 public class MahaiaFormController {
 
     @FXML private TextField txtIzena;
-    @FXML private ComboBox<String> cmbEgoera; 
+    @FXML private TextField txtErabiltzailea;
+    @FXML private PasswordField txtPasahitza;
+    @FXML private CheckBox chkChatBaimena;
     @FXML private Button btnGorde;
     @FXML private Button btnUtzi;
 
@@ -18,39 +20,41 @@ public class MahaiaFormController {
 
     @FXML
     public void initialize() {
-        cmbEgoera.setItems(FXCollections.observableArrayList(
-                "Libre", "Hartzatuta", "Erreserbatuta"
-        ));
-        cmbEgoera.setEditable(true);
     }
 
     public void setMahai(Mahaia m) {
         this.editatzen = m;
         if (m != null) {
             txtIzena.setText(m.getIzena());
-            cmbEgoera.setValue(m.getEgoera()); 
+            txtErabiltzailea.setText(m.getErabiltzailea());
+            txtPasahitza.setText(m.getPasahitza());
+            chkChatBaimena.setSelected(m.getChatBaimena() == 1);
         }
     }
 
     @FXML
     private void gordeMahai() {
         String izena = txtIzena.getText().trim();
-        String egoera = cmbEgoera.getValue();
+        String erabiltzailea = txtErabiltzailea.getText().trim();
+        String pasahitza = txtPasahitza.getText().trim();
+        int chatBaimena = chkChatBaimena.isSelected() ? 1 : 0;
 
-        if (izena.isEmpty() || egoera == null || egoera.isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Sartu izena eta egoera.").showAndWait();
+        if (izena.isEmpty() || erabiltzailea.isEmpty() || pasahitza.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Sartu izena, erabiltzailea eta pasahitza.").showAndWait();
             return;
         }
 
         if (editatzen == null) {
-            int id = MahaiakDB.gehituMahai(new Mahaia(0, izena, egoera));
+            int id = MahaiakDB.gehituMahai(new Mahaia(0, izena, erabiltzailea, pasahitza, chatBaimena));
             if (id == -1) {
                 new Alert(Alert.AlertType.ERROR, "Ezin izan da mahai gorde.").showAndWait();
                 return;
             }
         } else {
             editatzen.setIzena(izena);
-            editatzen.setEgoera(egoera);
+            editatzen.setErabiltzailea(erabiltzailea);
+            editatzen.setPasahitza(pasahitza);
+            editatzen.setChatBaimena(chatBaimena);
             MahaiakDB.eguneratuMahai(editatzen);
         }
 
