@@ -1,6 +1,8 @@
 package kontrola;
 
 import DatuBasea.ProduktuakDB;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Produktuak;
 
 public class ProduktuakController {
@@ -29,6 +32,7 @@ public class ProduktuakController {
 
     private ObservableList<Produktuak> produktuak;
     private FilteredList<Produktuak> filtratua;
+    private Timeline autoBerritu;
 
     @FXML
     public void initialize() {
@@ -63,6 +67,9 @@ public class ProduktuakController {
                 .addListener((obs, old, val) -> actualizarBotones());
 
         actualizarBotones();
+        autoBerritu = new Timeline(new KeyFrame(Duration.seconds(3), event -> berrituMantenduz()));
+        autoBerritu.setCycleCount(Timeline.INDEFINITE);
+        autoBerritu.play();
     }
 
     private void aplikatuFiltro() {
@@ -135,5 +142,17 @@ public class ProduktuakController {
 
     private void berritu() {
         produktuak.setAll(ProduktuakDB.lortuProduktuak());
+    }
+
+    private void berrituMantenduz() {
+        Produktuak hautatua = produktuTable.getSelectionModel().getSelectedItem();
+        Integer hautatutakoId = hautatua == null ? null : hautatua.getId();
+        produktuak.setAll(ProduktuakDB.lortuProduktuak());
+        if (hautatutakoId != null) {
+            produktuak.stream()
+                    .filter(p -> p.getId() == hautatutakoId)
+                    .findFirst()
+                    .ifPresent(p -> produktuTable.getSelectionModel().select(p));
+        }
     }
 }
