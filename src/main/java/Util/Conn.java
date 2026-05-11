@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conn {
-    private static final String HOST = getConfig("DB_HOST", "localhost");
+    private static final String HOST = getConfig("DB_HOST", "192.168.10.5");
     private static final String PORT = getConfig("DB_PORT", "3306");
     private static final String DATABASE = getConfig("DB_NAME", "erronka2026");
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE

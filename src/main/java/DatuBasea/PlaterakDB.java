@@ -32,7 +32,7 @@ public class PlaterakDB {
     }
 
     public static int gehitu(Platera p) {
-        String sql = "INSERT INTO platerak (izena, mota, perezioa) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO platerak (izena, mota, prezioa) VALUES (?, ?, ?)";
 
         try (Connection conn = Conn.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
